@@ -14,15 +14,15 @@ Each Celerium block header is as follows:
 
 ```text
 type BlockHeader struct {
-	PrevHash   celcrypt.Bytes32
-	HistoryRH  celcrypt.Bytes32
-	StateRH    celcrypt.Bytes32
-	TxHashesRH celcrypt.Bytes32
-	StakeH     celcrypt.Bytes32
-	FeePoolC   uint
-	FeePoolL   uint
-	Height     uint
-	Timestamp  uint
+    PrevHash   celcrypt.Bytes32
+    HistoryRH  celcrypt.Bytes32
+    StateRH    celcrypt.Bytes32
+    TxHashesRH celcrypt.Bytes32
+    StakeH     celcrypt.Bytes32
+    FeePoolC   uint
+    FeePoolL   uint
+    Height     uint
+    Timestamp  uint
 }
 ```
 
@@ -57,32 +57,32 @@ The general format of a transaction is as follows:
 
 ```go
 type Transaction struct {
-	Kind    uint8
-	Inputs  []TxInput
-	Outputs []TxOutput
-	Fee     uint
-	Data    []byte
-	Sigs    []TxSig
+    Kind    uint8
+    Inputs  []TxInput
+    Outputs []TxOutput
+    Fee     uint
+    Data    []byte
+    Sigs    []TxSig
 }
 
 // TxInput is a transaction input.
 type TxInput struct {
-	TxHash celcrypt.Bytes32
-	Index  uint
+    TxHash celcrypt.Bytes32
+    Index  uint
 }
 
 // TxOutput is a transaction output.
 type TxOutput struct {
-	Constraint ConsScript
-	Value      uint
-	CoinType   []byte
+    Constraint ConsScript
+    Value      uint
+    CoinType   []byte
 }
 
 // TxSig is an algorithm-agnostic signature structure.
 type TxSig struct {
-	Algorithm byte
-	PubKey    []byte
-	Signature []byte
+    Algorithm byte
+    PubKey    []byte
+    Signature []byte
 }
 ```
 
@@ -127,7 +127,7 @@ type PuzzleSolve struct {
 }
 ```
 
-The transaction inputs and outputs are validated as usual, except the input number of cels is incremented by the reward determined by the difficulty of the puzzle. The result is a transaction with more output than input, thus minting new cels.
+The transaction inputs and outputs are validated as usual, except the input number of cels is incremented by the reward determined by the difficulty of the puzzle. The result is a transaction with more output than input, thus minting new cels. 
 
 ### Staking and unstaking
 
@@ -142,7 +142,7 @@ type StakeBond struct {
 }
 ```
 
-`Host` specifies the consensus-protocol host \(generally a public key\), while  `Deposit` is the size of the bond in microlents, which must be at least 1000 lents \($$10^9$$ microlents\), all of which must "disappear" from the transaction inputs.
+`Host` specifies the consensus-protocol host \(generally a public key\), while  `Deposit` is the size of the bond in microlents, which must be at least 1000 lents \($10^9$microlents\), all of which must "disappear" from the transaction inputs.
 
 The bond will last for exactly 500,000 blocks. That is, if the staking transaction happens in block $$n$$, then the stake will be active from block $$n+1$$ to $$n+500000$$, inclusive.
 
@@ -160,11 +160,11 @@ Constraints are represented as a , but usually written in a fairly readable yet 
 
 ### List of opcodes
 
-| Opcode | Encoding | Input | Output | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `pushbts` | 0x10 | \(none\) | data | next 8 bytes is length of data to push |
-| `checksig` | 0x50 | sigalg, pubkey | \[1\], \[0\] | checks whether or not the tx has a valid signature |
-|  |  |  |  |  |
+| Opcode     | Encoding | Input          | Output       | Description                                        |
+|:---------- |:-------- |:-------------- |:------------ |:-------------------------------------------------- |
+| `pushbts`  | 0x10     | \(none\)       | data         | next 8 bytes is length of data to push             |
+| `checksig` | 0x50     | sigalg, pubkey | \[1\], \[0\] | checks whether or not the tx has a valid signature |
+|            |          |                |              |                                                    |
 
 ### Examples
 
@@ -177,6 +177,3 @@ push 0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef
 push "E"
 checksig
 ```
-
-
-
