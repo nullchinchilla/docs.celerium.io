@@ -20,7 +20,4 @@ The market maker starts with 1 million coins and 1 million dollars, and initiall
 
 ### HODLer
 
-The HODLer continually buys 1 coin every minute.
-
-
-
+The HODLer continually buys 1 coin every minute. $sjkfjsdklfjsdf$
