@@ -64,7 +64,7 @@ Some sort of incentive-compatible price feed might be possible, but I won't hold
 
 Why exactly do most cryptocurrencies have such a volatile price? The biggest reason is probably _completely inelastic supply of new coins_. Coins in a traditional cryptocurrency are mined according to a fixed schedule, independent of market conditions such as the demand for new coins. Thus, volatility in the demand for coins, due to factors such as adoption events, exchange crashes, etc causes large swings in the price of a coin.
 
-![Shock in the demand for a traditional cryptocurrency](.gitbook/assets/pic1.png)
+![Shock in the demand for a traditional cryptocurrency](../.gitbook/assets/pic1.png)
 
 The picture above illustrates this: a shift in the demand curve causes a large shift in the equilibrium price.
 
@@ -74,15 +74,15 @@ In contrast to usual cryptocurrencies, cels are _minted_ using a novel system kn
 
 Thus, assuming that "days of CPU time" has a stable value, minters in Celerium pay _constant per-unit costs_ when currency is created. Thus, they will supply an unlimited number of cels for any above-cost price, while supplying nothing for below-cost prices. This makes the supply of cels very elastic, giving much smaller price changes during demand shocks, especially upward ones, though it is not _perfectly_ elastic, considering the contribution of "old" cels to the supply during a downturn in demand where new cels are not in demand. We get a picture more like this:
 
-![Shock in the demand for cels](.gitbook/assets/pic2.png)
+![Shock in the demand for cels](../.gitbook/assets/pic2.png)
 
 It's important to note that this sort of elasticity is very common in real life currencies, both commodity and fiat. Central banks obviously print a lot more money during times of increased demand for currency, but even the supply of gold is not entirely inelastic: changes in demand for gold certainly do result in more or less gold production, as gold takes resources to extract and does not fall down from the sky. 
 
 There is significant evidence that commodities with relatively elastic original supplies \(such as paper\) have much stabler prices than commodities with inelastic supply \(such as precious metals\), even if the "second-hand" market dominates. 
 
-![Price of paper over time](.gitbook/assets/screenshot-from-2018-09-26-16-56-23.png)
+![Price of paper over time](../.gitbook/assets/screenshot-from-2018-09-26-16-56-23.png)
 
-![Price of platinum over time](.gitbook/assets/screenshot-from-2018-09-26-17-00-46.png)
+![Price of platinum over time](../.gitbook/assets/screenshot-from-2018-09-26-17-00-46.png)
 
 
 
