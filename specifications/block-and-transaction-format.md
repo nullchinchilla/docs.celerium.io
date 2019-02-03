@@ -14,15 +14,15 @@ Each Celerium block header is as follows:
 
 ```text
 type BlockHeader struct {
-	PrevHash   celcrypt.Bytes32
-	HistoryRH  celcrypt.Bytes32
-	StateRH    celcrypt.Bytes32
-	TxHashesRH celcrypt.Bytes32
-	StakeH     celcrypt.Bytes32
-	FeePoolC   uint
-	FeePoolL   uint
-	Height     uint
-	Timestamp  uint
+    PrevHash   celcrypt.Bytes32
+    HistoryRH  celcrypt.Bytes32
+    StateRH    celcrypt.Bytes32
+    TxHashesRH celcrypt.Bytes32
+    StakeH     celcrypt.Bytes32
+    FeePoolC   uint
+    FeePoolL   uint
+    Height     uint
+    Timestamp  uint
 }
 ```
 
@@ -32,7 +32,7 @@ The parent hash points to the previous block header. The history tree maps _litt
 
 The state tree of each block is an MBPT storing mappings generally related to state useful for light clients. The purpose of lumping it into one tree is to support future features while keeping backwards compatibility with clients \(though not auditors\). This _currently_ is the following:
 
-* A mapping from `["utxo.value", txInput]`, for every UTXO represented as a TxInput structure, to a TxOutput structure. Both these structures are defined in the subsequent section on transactions.
+* A mapping from `["utxo.value", txInput]`, for every UTXO represented as a TxInput structure, to a TxOutput structure. Both these structures are defined in the subsequent section on transactions.d
 * A mapping from `["utxo.coincount", consHash]` for every constraint with active coins \(the double hashing is to prevent DoS vectors from really huge constraints\), to the \(RLP-encoded\) number of unspent UTXOs with that constraint. Of course, constraints with no active coin would not have an entry here.
 
 These mappings allow the basic function of a "SPV" client to be entirely trust-free, unlike the situation in Bitcoin where hiding coins or misrepresenting spent status of coins is possible.
@@ -57,32 +57,32 @@ The general format of a transaction is as follows:
 
 ```go
 type Transaction struct {
-	Kind    uint8
-	Inputs  []TxInput
-	Outputs []TxOutput
-	Fee     uint
-	Data    []byte
-	Sigs    []TxSig
+    Kind    uint8
+    Inputs  []TxInput
+    Outputs []TxOutput
+    Fee     uint
+    Data    []byte
+    Sigs    []TxSig
 }
 
 // TxInput is a transaction input.
 type TxInput struct {
-	TxHash celcrypt.Bytes32
-	Index  uint
+    TxHash celcrypt.Bytes32
+    Index  uint
 }
 
 // TxOutput is a transaction output.
 type TxOutput struct {
-	Constraint ConsScript
-	Value      uint
-	CoinType   []byte
+    Constraint ConsScript
+    Value      uint
+    CoinType   []byte
 }
 
 // TxSig is an algorithm-agnostic signature structure.
 type TxSig struct {
-	Algorithm byte
-	PubKey    []byte
-	Signature []byte
+    Algorithm byte
+    PubKey    []byte
+    Signature []byte
 }
 ```
 
@@ -160,11 +160,11 @@ Constraints are represented as a , but usually written in a fairly readable yet 
 
 ### List of opcodes
 
-| Opcode | Encoding | Input | Output | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `pushbts` | 0x10 | \(none\) | data | next 8 bytes is length of data to push |
-| `checksig` | 0x50 | sigalg, pubkey | \[1\], \[0\] | checks whether or not the tx has a valid signature |
-|  |  |  |  |  |
+| Opcode     | Encoding | Input          | Output       | Description                                        |
+|:---------- |:-------- |:-------------- |:------------ |:-------------------------------------------------- |
+| `pushbts`  | 0x10     | \(none\)       | data         | next 8 bytes is length of data to push             |
+| `checksig` | 0x50     | sigalg, pubkey | \[1\], \[0\] | checks whether or not the tx has a valid signature |
+|            |          |                |              |                                                    |
 
 ### Examples
 
@@ -177,6 +177,3 @@ push 0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef
 push "E"
 checksig
 ```
-
-
-
