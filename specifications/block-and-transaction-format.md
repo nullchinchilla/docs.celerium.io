@@ -142,13 +142,13 @@ type StakeBond struct {
 }
 ```
 
-`Host` specifies the consensus-protocol host \(generally a public key\), while  `Deposit` is the size of the bond in microlents, which must be at least 1000 lents \($$10^9$$ microlents\), all of which must "disappear" from the transaction inputs.
+`Host` specifies the consensus-protocol host \(generally a public key\), while `Deposit` is the size of the bond in microlents, which must be at least 1000 lents \($$10^9$$ microlents\), all of which must "disappear" from the transaction inputs.
 
 The bond will last for exactly 500,000 blocks. That is, if the staking transaction happens in block $$n$$, then the stake will be active from block $$n+1$$ to $$n+500000$$, inclusive.
 
 #### Unstaking
 
-When bonds 
+When bonds
 
 ## Constraint scripting
 
@@ -160,11 +160,11 @@ Constraints are represented as a , but usually written in a fairly readable yet 
 
 ### List of opcodes
 
-| Opcode     | Encoding | Input          | Output       | Description                                        |
-|:---------- |:-------- |:-------------- |:------------ |:-------------------------------------------------- |
-| `pushbts`  | 0x10     | \(none\)       | data         | next 8 bytes is length of data to push             |
-| `checksig` | 0x50     | sigalg, pubkey | \[1\], \[0\] | checks whether or not the tx has a valid signature |
-|            |          |                |              |                                                    |
+| Opcode | Encoding | Input | Output | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `pushbts` | 0x10 | \(none\) | data | next 8 bytes is length of data to push |
+| `checksig` | 0x50 | sigalg, pubkey | \[1\], \[0\] | checks whether or not the tx has a valid signature |
+|  |  |  |  |  |
 
 ### Examples
 
@@ -177,3 +177,4 @@ push 0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef
 push "E"
 checksig
 ```
+

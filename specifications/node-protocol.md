@@ -52,38 +52,6 @@ Returns the latest consensus in JSON format.
 {% endapi-method-spec %}
 {% endapi-method %}
 
-{% api-method method="get" host="http://autonode.celerium.io" path="/stakelog?after=..." %}
-{% api-method-summary %}
-Stake log
-{% endapi-method-summary %}
-
-{% api-method-description %}
-Returns the stake log in JSON format
-{% endapi-method-description %}
-
-{% api-method-spec %}
-{% api-method-request %}
-{% api-method-path-parameters %}
-{% api-method-parameter name="after" type="string" required=false %}
-Requests only stake log entries after a certain stake hash.
-{% endapi-method-parameter %}
-{% endapi-method-path-parameters %}
-{% endapi-method-request %}
-
-{% api-method-response %}
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Array of hexadecimal staking transactions
-{% endapi-method-response-example-description %}
-
-```
-[...]
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
 ## Block methods
 
 Information about blocks are served under `/blocks/<height>`. 
@@ -179,13 +147,13 @@ Nonexistent block height
 {% endapi-method-spec %}
 {% endapi-method %}
 
-{% api-method method="get" host="http://autonode.celerium.io" path="/blocks/<height>/alltx.\[bin\|hex\]" %}
+{% api-method method="get" host="http://autonode.celerium.io" path="/blocks/<height>/.\[bin\|hex\]" %}
 {% api-method-summary %}
-Dumping transactions
+Dumping entire block
 {% endapi-method-summary %}
 
 {% api-method-description %}
-Returns all the transactions in a block, in order, concatenated together.
+Returns all the transactions in a block, in order, concatenated together. This is guaranteed to work only for recent blocks!
 {% endapi-method-description %}
 
 {% api-method-spec %}
@@ -345,13 +313,13 @@ Blockchain congested
 {% endapi-method-spec %}
 {% endapi-method %}
 
-{% api-method method="get" host="http://autonode.celerium.io" path="" %}
+{% api-method method="post" host="http://autonode.celerium.io" path="/transactions/querycoins" %}
 {% api-method-summary %}
-Query coins by 
+Query coins
 {% endapi-method-summary %}
 
 {% api-method-description %}
-
+Queries 
 {% endapi-method-description %}
 
 {% api-method-spec %}
