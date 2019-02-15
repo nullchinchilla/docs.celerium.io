@@ -7,7 +7,7 @@ We start our exploration of Celerium's features by looking at how nodes in Celer
 Participants in Celerium are divided into three categories by their roles:
 
 * **Stakeholders** record transactions into new blocks and confirm them using a Byzantine fault-tolerant consensus algorithm between themselves. They communicate with each other through a broadcast protocol which other nodes in the network never participate in. The set of stakeholders is determined on the blockchain by "staking" a cryptoasset; the staking process will be discussed in TODO. Stakeholders correspond to miners or validators in other systems.
-* **Auditors** download newly created blocks from the stakeholders and gossip them between themselves, while storing a local copy of the blockchain. Anybody can join the network as a auditor, and they verify the new blocks decided by the stakeholders and check that the stakeholders never equivocate on the content of a given block height. Importantly, Auditors roughly correspond to full nodes in other systems, although they have a more important role in Celerium's security.
+* **Auditors** download newly created blocks from the stakeholders and gossip them between themselves, while storing a local copy of the blockchain. Anybody can join the network as a auditor, and they verify the new blocks decided by the stakeholders and check that the stakeholders never equivocate on the content of a given block height. Auditors roughly correspond to full nodes in other systems, although they have a more important role in Celerium's security.
 * **Clients** are lightweight participants that query the network of auditors to access specific information in the blockchain, yet do not trust any particular auditor.
 
 From this overview we can already see that the trust model of Celerium differs significantly both from that of traditional proof-of-work public blockchains like Bitcoin and from that of typical private blockchains, and is one of its major innovations. Celerium's trust can be summarized succinctly as an **"oligarchy with a free press"**, in contrast to private blockchains' "closed oligarchy/monarchy" or traditional public blockchains' "direct democracy".
@@ -22,7 +22,7 @@ In Celerium, a Byzantine-resistant fault tolerant algorithm, similar to that use
 **Lent** comes from _lentus_, the Latin word for "slow", a reference to how lents must be frozen by stakeholders to establish voting rights.
 {% endhint %}
 
-Lents are an on-chain cryptocurrency traded freely alongside cels, the main cryptocurrency of Celerium, with a fixed supply of 1 million lents. Holders of lents can **stake** them, locking them up for a fixed period of time \(500,000 blocks, or approximately 6 months\) to obtain voting rights in the consensus algorithm in proportion to the amount of lents staked. The central security assumption Celerium uses is that **at least 2/3 of the staked lents are in the hands of honest stakeholders**, which derives from a fundamental property of asynchronous Byzantine-fault-tolerant consensus.
+Lents are an on-chain cryptocurrency traded freely alongside cels, the main cryptocurrency of Celerium, with a regulated supply of 1 lent per block \(1.05 million lents per year\). Holders of lents can **stake** them, locking them up for a fixed period of time \(500,000 blocks, or approximately 6 months\) to obtain voting rights in the consensus algorithm in proportion to the amount of lents staked. The central security assumption Celerium uses is that **at least 2/3 of the staked lents are in the hands of honest stakeholders**, which derives from a fundamental property of asynchronous Byzantine-fault-tolerant consensus.
 
 ### Rewards and slashing
 
@@ -55,12 +55,7 @@ The "free press" in Celerium consists of **auditors**. Auditors are "full nodes"
 
 The more important role of auditors, though, is to _make consensus failure catastrophic,_ playing a crucial role in keeping the oligarchy of coordinators honest. Auditors utilize their position as relayers of new blocks to continually monitor for evidence that the consensus of the coordinators is corrupt --- for example, invalid blocks or two different blocks at the same height signed by a quorum of coordinators would be proof that the coordinators are no longer trustworthy. Notably, these proofs are cryptographically undeniable, as invalid states signed by a quorum never have "innocent explanations". Any auditor that sees such proof immediately broadcasts it to all auditors it knows in the gossip network, while permanently activating a \`\`kill switch'' and refusing to operate normally. Thus, the presence of auditors ensures that even if an adversary somehow gains control over a quorum of coordinators, any attempt at forking or appending invalid transactions to the blockchain would cause a catastrophic collapse of the entire network instead of silent, arbitrary corruption of the blockchain.
 
-```text
-Why make failure catastrophic? Disabling the network prevents damage and forces
-manual recovery through a hard fork. If 2/3 of stakeholders are bad the network
-is pretty much useless anyway. This also makes attacks very very risky and
-impossible to conceal.
-```
+This objective seems a little strange. Why would we ever want 
 
 ### Why fail hard?
 
