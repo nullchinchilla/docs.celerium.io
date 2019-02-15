@@ -2,7 +2,11 @@
 
 ## Overview
 
-Celerium nodes --- both coordinators and auditors --- offer a uniform HTTP-based API for use by peer nodes and clients alike. In this document we describe every method offered by a Celerium node, using `autonode.celerium.io` \(the DNS bootstrapping node\) as an example endpoint.
+Celerium nodes --- both coordinators and auditors --- offer a uniform HTTP-based API for use by peer nodes and clients alike. 
+
+This API is designed for efficiency and would be used with middleware. It isn't particularly suited for direct "manual" usage by stuff like jQuery. Thus, it's broadly RESTful, but instead of the usual JSON, we generally use RLP values for efficiency. Whenever values are mentioned, they are RLP-encoded unless otherwise indicated. Key-value parameters are typically query strings for GET methods and form parameters for POST methods. 
+
+In this document we describe every method offered by a Celerium node, using `autonode.celerium.io` \(the DNS bootstrapping node\) as an example endpoint.
 
 ## Consensus methods
 
@@ -22,7 +26,7 @@ Latest consensus
 {% endapi-method-summary %}
 
 {% api-method-description %}
-Returns the latest consensus in JSON format. 
+Returns the latest consensus.  **TBD**
 {% endapi-method-description %}
 
 {% api-method-spec %}
@@ -58,7 +62,7 @@ Information about blocks are served under `/blocks/<height>`.
 
 **Note**: Information about blocks is generally limited to the last 100 blocks, unless in the case of archive nodes. 
 
-{% api-method method="get" host="http://autonode.celerium.io" path="/blocks/<height>/tx/<txhash>.\[bin\|hex\]" %}
+{% api-method method="get" host="http://autonode.celerium.io" path="/blocks/<height>/tx/<txhash>" %}
 {% api-method-summary %}
 Individual transactions
 {% endapi-method-summary %}
@@ -104,13 +108,13 @@ Transaction not found
 {% endapi-method-spec %}
 {% endapi-method %}
 
-{% api-method method="get" host="http://autonode.celerium.io" path="/blocks/<height>/header.\[bin\|hex\]" %}
+{% api-method method="get" host="http://autonode.celerium.io" path="/blocks/<height>/header" %}
 {% api-method-summary %}
 Headers
 {% endapi-method-summary %}
 
 {% api-method-description %}
-Returns the header of a block at a certain height, in binary or hexadecimal format.
+Returns the header of a block at a certain height.
 {% endapi-method-description %}
 
 {% api-method-spec %}
@@ -147,7 +151,7 @@ Nonexistent block height
 {% endapi-method-spec %}
 {% endapi-method %}
 
-{% api-method method="get" host="http://autonode.celerium.io" path="/blocks/<height>/.\[bin\|hex\]" %}
+{% api-method method="get" host="http://autonode.celerium.io" path="/blocks/<height>/fullblock" %}
 {% api-method-summary %}
 Dumping entire block
 {% endapi-method-summary %}
@@ -195,7 +199,7 @@ Digging into MBPTs
 {% endapi-method-summary %}
 
 {% api-method-description %}
-Returns an MBPT branch, starting from the root to the leaf, as a JSON array of Base64 values.   
+Returns an MBPT branch, starting from the root to the leaf, as an RLP array of nodes.   
   
 Unlike the other methods, this one is guaranteed to work only for the **latest** block!
 {% endapi-method-description %}
@@ -212,7 +216,7 @@ One of "history", "state", or "transactions"
 {% endapi-method-parameter %}
 
 {% api-method-parameter name="key" type="string" required=true %}
-Hexadecimal 32-byte key into the MBPT
+Hexadecimal key into the MBPT
 {% endapi-method-parameter %}
 {% endapi-method-path-parameters %}
 {% endapi-method-request %}
@@ -245,7 +249,7 @@ Block too old!
 
 Methods on transactions are generally under `/transactions`. These methods may or may not be supported!
 
-{% api-method method="post" host="http://autonode.celerium.io" path="/transactions/submit?format=\[hex\|bin\]" %}
+{% api-method method="post" host="http://autonode.celerium.io" path="/transactions/submit" %}
 {% api-method-summary %}
 Submitting a transaction
 {% endapi-method-summary %}
@@ -256,12 +260,6 @@ Submits a transaction to be included as soon as possible.
 
 {% api-method-spec %}
 {% api-method-request %}
-{% api-method-path-parameters %}
-{% api-method-parameter name="format" type="string" required=false %}
-Hexadecimal or binary format. Defaults to binary.
-{% endapi-method-parameter %}
-{% endapi-method-path-parameters %}
-
 {% api-method-body-parameters %}
 {% api-method-parameter name="" type="object" required=true %}
 Raw transaction data
@@ -313,20 +311,24 @@ Blockchain congested
 {% endapi-method-spec %}
 {% endapi-method %}
 
-{% api-method method="post" host="http://autonode.celerium.io" path="/transactions/querycoins" %}
+{% api-method method="get" host="http://autonode.celerium.io" path="/transactions/querycoins?height=...&conshash=..." %}
 {% api-method-summary %}
 Query coins
 {% endapi-method-summary %}
 
 {% api-method-description %}
-Queries 
+Queries for coins associated with a particular constraint. Returns an RLP-encoded array of \[TxInput, TxOutputAndHeight\].
 {% endapi-method-description %}
 
 {% api-method-spec %}
 {% api-method-request %}
 {% api-method-path-parameters %}
-{% api-method-parameter name="" type="string" required=false %}
+{% api-method-parameter name="conshash" type="string" required=true %}
+hex-encoded hash of the constraint
+{% endapi-method-parameter %}
 
+{% api-method-parameter name="height" type="number" required=true %}
+block height whose state we're querying
 {% endapi-method-parameter %}
 {% endapi-method-path-parameters %}
 {% endapi-method-request %}
