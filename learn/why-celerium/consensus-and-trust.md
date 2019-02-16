@@ -53,11 +53,13 @@ Kicking punishes cryptographically unprovable misbehavior, such as having a very
 
 The "free press" in Celerium consists of **auditors**. Auditors are "full nodes" in usual terminology, replicating the entire blockchain --- each block of which is published and cryptographically signed by the stakeholders --- while checking that each transaction is valid with respect to previous ones in the blockchain. They form a random **gossip** network among themselves, similar to that used by Bitcoin full nodes, through which information about new blocks is disseminated. This gossip network reduces load on the stakeholders and makes it difficult for malicious networks to censor the blockchain, since as long as some auditors can connect to the stakeholders and the auditors form a connected graph, new blocks will quickly be visible to every auditor.
 
-The more important role of auditors, though, is to _make consensus failure catastrophic,_ playing a crucial role in keeping the oligarchy of coordinators honest. Auditors utilize their position as relayers of new blocks to continually monitor for evidence that the consensus of the coordinators is corrupt --- for example, invalid blocks or two different blocks at the same height signed by a quorum of coordinators would be proof that the coordinators are no longer trustworthy. Notably, these proofs are cryptographically undeniable, as invalid states signed by a quorum never have "innocent explanations". Any auditor that sees such proof immediately broadcasts it to all auditors it knows in the gossip network, while permanently activating a \`\`kill switch'' and refusing to operate normally. Thus, the presence of auditors ensures that even if an adversary somehow gains control over a quorum of coordinators, any attempt at forking or appending invalid transactions to the blockchain would cause a catastrophic collapse of the entire network instead of silent, arbitrary corruption of the blockchain.
+The more important role of auditors, though, is to _make consensus failure catastrophic,_ playing a crucial role in keeping the oligarchy of coordinators honest. Auditors utilize their position as relayers of new blocks to continually monitor for evidence that the consensus of the coordinators is corrupt --- for example, invalid blocks or two different blocks at the same height signed by a quorum of coordinators would be proof that the coordinators are no longer trustworthy. Notably, these proofs are cryptographically undeniable, as invalid states signed by a quorum never have "innocent explanations". Any auditor that sees such proof immediately broadcasts it to all auditors it knows in the gossip network, while permanently activating a "kill switch" and refusing to operate normally. Thus, the presence of auditors ensures that even if an adversary somehow gains control over a quorum of coordinators, any attempt at forking or appending invalid transactions to the blockchain would cause a catastrophic collapse of the entire network instead of silent, arbitrary corruption of the blockchain.
 
-This objective seems a little strange. Why would we ever want 
+### Why do we want this?
 
-### Why fail hard?
+This objective seems a little strange. Why would we ever want to kill the entire network?
+
+The first thing to notice is that 
 
 ## Clients: thin yet fully secure
 
