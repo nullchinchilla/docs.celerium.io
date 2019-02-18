@@ -22,7 +22,7 @@ In Celerium, a Byzantine-resistant fault tolerant algorithm, similar to that use
 **Lent** comes from _lentus_, the Latin word for "slow", a reference to how lents must be frozen by stakeholders to establish voting rights.
 {% endhint %}
 
-Lents are an on-chain cryptocurrency traded freely alongside cels, the main cryptocurrency of Celerium, with a regulated supply of 1 lent per block \(1.05 million lents per year\). Holders of lents can **stake** them, locking them up for a fixed period of time \(500,000 blocks, or approximately 6 months\) to obtain voting rights in the consensus algorithm in proportion to the amount of lents staked. The central security assumption Celerium uses is that **at least 2/3 of the staked lents are in the hands of honest stakeholders**, which derives from a fundamental property of asynchronous Byzantine-fault-tolerant consensus.
+Lents are an on-chain cryptocurrency traded freely alongside cels, the main cryptocurrency of Celerium, with a regulated supply of 1 lent per block \(1.05 million lents per year\). Holders of lents can **stake** them, locking them up for a fixed period of time \(500,000 blocks, or approximately 6 months\) to obtain voting rights in the consensus algorithm in proportion to the amount of lents staked. The central security assumption Celerium uses is that *at least 2/3 of the staked lents are in the hands of honest stakeholders*, which derives from a fundamental property of asynchronous Byzantine-fault-tolerant consensus.
 
 ### Rewards and slashing
 
@@ -45,19 +45,31 @@ Kicking punishes cryptographically unprovable misbehavior, such as having a very
 
 ### Why bonded proof-of-stake?
 
-
-
 ## Auditors: the free press
 
 ### Making failure catastrophic
 
 The "free press" in Celerium consists of **auditors**. Auditors are "full nodes" in usual terminology, replicating the entire blockchain --- each block of which is published and cryptographically signed by the stakeholders --- while checking that each transaction is valid with respect to previous ones in the blockchain. They form a random **gossip** network among themselves, similar to that used by Bitcoin full nodes, through which information about new blocks is disseminated. This gossip network reduces load on the stakeholders and makes it difficult for malicious networks to censor the blockchain, since as long as some auditors can connect to the stakeholders and the auditors form a connected graph, new blocks will quickly be visible to every auditor.
 
-The more important role of auditors, though, is to _make consensus failure catastrophic,_ playing a crucial role in keeping the oligarchy of coordinators honest. Auditors utilize their position as relayers of new blocks to continually monitor for evidence that the consensus of the coordinators is corrupt --- for example, invalid blocks or two different blocks at the same height signed by a quorum of coordinators would be proof that the coordinators are no longer trustworthy. Notably, these proofs are cryptographically undeniable, as invalid states signed by a quorum never have "innocent explanations". Any auditor that sees such proof immediately broadcasts it to all auditors it knows in the gossip network, while permanently activating a \`\`kill switch'' and refusing to operate normally. Thus, the presence of auditors ensures that even if an adversary somehow gains control over a quorum of coordinators, any attempt at forking or appending invalid transactions to the blockchain would cause a catastrophic collapse of the entire network instead of silent, arbitrary corruption of the blockchain.
+The more important role of auditors, though, is to _make consensus failure catastrophic,_ playing a crucial role in keeping the oligarchy of coordinators honest. Auditors utilize their position as relayers of new blocks to continually monitor for evidence that the consensus of the coordinators is corrupt --- for example, invalid blocks or two different blocks at the same height signed by a quorum of coordinators would be proof that the coordinators are no longer trustworthy. These pieces of evidence, known as **consensus nukes**, undeniably prove that at least 1/3 of the stakeholders are actively malicious.
 
-This objective seems a little strange. Why would we ever want 
+Any auditor that sees a consensus nuke immediately broadcasts it to all auditors it knows in the gossip network, while permanently activating a "kill switch" and refusing to operate normally. Thus, an attempt at forking or appending invalid transactions to the blockchain would figuratively "nuke" the entire network, permanently stopping the system.
 
-### Why fail hard?
+### Why do we want this?
+
+This objective seems a little strange. Why would we ever want our network to self-destruct?
+
+The obvious answer is that if we no longer have a 2/3 supermajority of honest stake, the entire system is utterly screwed no matter what. More specifically, the well-known [DLS paper](http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) mathematically proves that consensus protocols running in a partially synchronous network model (that is, network delays are unknown but finite) cannot possibly tolerate more than 1/3 arbitrary faults. So we have to choose between a model where the network stays up, but malicious stakeholders can corrupt the state arbitrarily (rewriting history, giving themselves free money --- or shutting down the network), or one where the only thing a corrupted quorum can do is shut down the network. Clearly, the latter is preferable.
+
+More importantly, consensus nuking changes the incentives of potential attackers by making most attacks unprofitable. Consider a blockchain where consensus-breaking attacks (like Bitcoin's 51% attack) allow arbitrary state corruption. A malicious actor with the ability to execute such attacks can extract huge profits --- one easy attack would be to simply sell coins for off-chain currency, break consensus to revert the transaction to the currency trader, and repeat indefinitely. With more complex higher-level applications relying on blockchain data, profit opportunities are even more numerous. Thus, if enough self-serving stakeholders collude, and no reputations and such are on the line, they are greatly incentivized to attack the network and destroy its security guarantees.
+
+If a successful attack can only result in the network stopping all work, only attackers who greatly benefit from destroying the network will participate. Most attackers will not; in fact, since a successful attacker must stake a vast amount of lents to take over more than 1/3 of the stake, destroying the network and thus the value of the investment is highly irrational. Shorting lents appears to be an easy way to profit from a consensus nuke, but fortunately a short position large enough the balance the enormous "long" position needed to own enough stake will be very difficult to set up.
+
+Finally, a shutdown when a successful attack occurs forces Celerium users to manually coordinate an emergency "hard fork" out-of-band to restore the network. This would involve, at the very least, a redistribution of stakes away from the attacking parties, and possibly including protocol improvements to further deter attacks. On the other hand, if the blockchain continues to operate even when stakeholders are corrupting the state, it's concievable that the malicious stakeholder cartel can create a climate of fear or pressure for users to go along with the corrupted chain (for example, the state corruption might be forced by legal regulation or presented as way of restoring stolen assets). Consensus nuking ensures that this scenario is impossible.
+
+
+
+
 
 ## Clients: thin yet fully secure
 
@@ -68,8 +80,5 @@ Current thin clients have bad tradeoffs
 
 Extremely thin by keeping track of only latest header
 
-Fast, safe stakeholder tracking with essentially no "weak subjectivity"
+Fast, safe stakeholder tracking with essentially no "weak subjectivity"z<
 ```
-
-
-
