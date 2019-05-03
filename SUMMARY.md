@@ -20,6 +20,7 @@
 
 ## Specifications
 
+* [Stakeholder rewards](specifications/stakeholder-rewards.md)
 * [Block and transaction format](specifications/block-and-transaction-format.md)
 * [Untitled](specifications/untitled.md)
 * [Block and transaction validation](specifications/block-and-transaction-validation.md)
