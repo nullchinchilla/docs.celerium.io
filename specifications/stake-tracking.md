@@ -16,7 +16,7 @@ Time is divided into _stake epochs_ lasting 500,000 blocks each. The first epoch
 
 At the start of each epoch, the effects of all the stake-related transactions in the previous epoch are applied for the next epoch. A staking transaction estabilishes voting rights for exactly one epoch, and imposes a waiting period of at least another epoch before the funds are returned, during which slashing may happen. This is done by simply enforcing that a stake deposited in block $$n$$ stays deposited until block $$n+1000000$$.
 
- The state of the stakes within an epoch is described by a _stake document_.
+The state of the stakes within an epoch is described by a _stake document_.
 
 ### Stake documents
 
@@ -25,10 +25,10 @@ Each epoch has a stake document associated with it, summarizing the detailed inf
 ```go
 // StakeDocEntry is an entry in a stake document.
 type StakeDocEntry struct {
-	SigningKey  []byte // first byte is algorithm, rest is PK, not public key hash
-	StartEpoch  uint
-	UnlockEpoch uint // epoch after the last voting epoch
-	Staked      uint // lents staked
+    SigningKey  []byte // first byte is algorithm, rest is PK, not public key hash
+    StartEpoch  uint
+    UnlockEpoch uint // epoch after the last voting epoch
+    Staked      uint // lents staked
 }
 ```
 
@@ -41,15 +41,16 @@ Both of these documents contain information about stakeholders who no longer hav
 ### Staking transaction
 
 All staking transactions must:
-- Have kind `KindStake`
-- First output:
-    - Has cointype `'L'`
-    - Has value at least 1000
-- Data:
-    - Valid `StakeDocEntry`
-    - `StartEpoch` greater than current epoch
-    - `UnlockEpoch` greater than `StartEpoch`
-    - `Staked` exactly equal to value of first output
+
+* Have kind `KindStake`
+* First output:
+  * Has cointype `'L'`
+  * Has value at least 1000
+* Data:
+  * Valid `StakeDocEntry`
+  * `StartEpoch` greater than current epoch
+  * `UnlockEpoch` greater than `StartEpoch`
+  * `Staked` exactly equal to value of first output
 
 ### Thin-client catching up
 
@@ -58,7 +59,7 @@ Thin clients must be able to securely derive the stake document of the current e
 * All the pre-epoch-start block headers since the last one the client knows about, together with their quorum signatures
 * The stake documents of all the epochs the client missed
 
-The client then verifies the information by incrementally checking the validity of the pre-epoch-start block header using a stake document it has already verified, using the header to verify another stake document, etc. 
+The client then verifies the information by incrementally checking the validity of the pre-epoch-start block header using a stake document it has already verified, using the header to verify another stake document, etc.
 
 ## Design rationale
 
@@ -83,7 +84,5 @@ Vitalik Buterin already has a [pretty good blog post](https://blog.ethereum.org/
 
 ### Can slashed stakeholders vote?
 
-Slashed stakeholders can, unfortunately, vote until the end of an epoch. This is not really an problem, since under normal circumstances slashed stakeholders cannot possibly be too numerous to cause security failure \(in that case a consensus alarm will happen and the whole issue is moot\). The only problem is that they might collect rewards, but such rewards will only be a small percentage of the stake they lost. 
-
-
+Slashed stakeholders can, unfortunately, vote until the end of an epoch. This is not really an problem, since under normal circumstances slashed stakeholders cannot possibly be too numerous to cause security failure \(in that case a consensus alarm will happen and the whole issue is moot\). The only problem is that they might collect rewards, but such rewards will only be a small percentage of the stake they lost.
 

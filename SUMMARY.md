@@ -20,9 +20,10 @@
 
 ## Specifications
 
-* [Untitled](specifications/untitled.md)
 * [Block and transaction format](specifications/block-and-transaction-format.md)
+* [Untitled](specifications/untitled.md)
 * [Block and transaction validation](specifications/block-and-transaction-validation.md)
 * [Node protocol](specifications/node-protocol.md)
 * [Stake tracking](specifications/stake-tracking.md)
+* [MelScript specification](specifications/melscript-specification.md)
 
