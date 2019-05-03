@@ -23,18 +23,33 @@ At the start of each epoch, the effects of all the stake-related transactions in
 Each epoch has a stake document associated with it, summarizing the detailed information of stake bonds. The stake document is a Merkle binary radix-tree mapping between `SigningKey` and the following structure, RLP-encoded:
 
 ```go
+// StakeDocEntry is an entry in a stake document.
 type StakeDocEntry struct {
-    SigningKey []byte // first byte is algorithm, rest is PK, not public key hash
-    DepositHeight uint // staking block height
-    Staked uint // microlents staked
+	SigningKey  []byte // first byte is algorithm, rest is PK, not public key hash
+	StartEpoch  uint
+	UnlockEpoch uint // epoch after the last voting epoch
+	Staked      uint // lents staked
 }
 ```
 
 ### Block header values
 
-The block header includes hashes of two tries: `EpochStakeDoc` and `PreStakeDoc`. Both are mappings from signing key to `StakeDocEntry`. The former stays the same for an entire epoch, while the latter changes with every stake transaction. When a new epoch is started, say in block 500,000, `EpochStakeDoc` is set to the `PreStakeDoc` of block 499,999.
+The block header includes hashes of a trie `StakeDoc`. It's a mapping from staking transaction ID to `StakeDocEntry`. When a new epoch is started, the trie is cleaned of all entries where `UnlockEpoch` is in the past.
 
 Both of these documents contain information about stakeholders who no longer have voting power, but still have deposited stakes. This is in accordance with the overall principle that the block header commits to all the data that's needed to validate new blocks and transactions.
+
+### Staking transaction
+
+All staking transactions must:
+- Have kind `KindStake`
+- First output:
+    - Has cointype `'L'`
+    - Has value at least 1000
+- Data:
+    - Valid `StakeDocEntry`
+    - `StartEpoch` greater than current epoch
+    - `UnlockEpoch` greater than `StartEpoch`
+    - `Staked` exactly equal to value of first output
 
 ### Thin-client catching up
 
